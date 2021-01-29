@@ -14,6 +14,11 @@ V2 of RecycleNet, I decided to move to an object detection model for increased f
 
 ## Performance
 Overall acheived accuracy of over 95%. Results can be seen below.
+
+![PET](images/PET.jpg)
+![Can](images/Can.jpg)
+![glass](images/Glass.jpg)
+
 # V1
 ## Implementation
 This Nerual network was implented using Transfer learning on the VGG16 model. Data was obtained from https://github.com/garythung/trashnet/tree/master/data 
