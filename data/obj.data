@@ -1,0 +1,5 @@
+classes = 2
+train  = trash/train.txt
+valid  = trash/test.txt
+names = trash/obj.names
+backup = backup/

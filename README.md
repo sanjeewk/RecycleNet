@@ -8,25 +8,56 @@ Another issue is the lack of awareness among people on the correct way to split 
 
 By using Computer vision, both these problems can be solved. 
 
-# V2
-## Implementation
-V2 of RecycleNet, I decided to move to an object detection model for increased fucntionality. Yolov5 architecture was chosen for it's accuracy and inference speed. Data was obtained from https://www.kaggle.com/arkadiyhacks/drinking-waste-classification/version/2
-
 ## Performance
-Overall acheived accuracy of over 95%. Results can be seen below.
+Overall acheived accuracy of over 95%. Results shown below.
 
 ![PET](images/PET.jpg)
 ![Can](images/Can.jpg)
 ![glass](images/Glass.jpg)
 
-# V1
-## Implementation
-This Nerual network was implented using Transfer learning on the VGG16 model. Data was obtained from https://github.com/garythung/trashnet/tree/master/data 
+## Dataset
+Custom built DIRT dataset.
 
-Next, the model and API were hosted using Flask on a AWS EC2 instance for easy access.
+All images are annotated in yolo format. 
+|No.| Class | Number of images |
+|--- | --- | --- |
+|1| liquid/water drop| 120 |
+|3|coffee stain|56|
+|1|Dust|69|
+|2| Paper | 554 |
+|3| shredded Paper |130 |
+|4| Bottles/cup | 1629 |
+|5| Metal |1207|
+|7| food pouches|34|
+|1|  Glass | 1223 |
+|2| HDPME | 1049 |
 
-## Performance
-Overall acheived accuracy of over 85%.
+## Training Instructions
+Clone darknet directory and navigate to darknet/build/darknet/x64
+```
+git clone https://github.com/AlexeyAB/darknet.git
+$ cd darknet/build/darknet/x64
+```
+Download docker container from https://hub.docker.com/r/daisukekobayashi/darknet and then run container in detache mode to enable training in backgrounnd. Exec into the container.
+```
+docker pull daisukekobayashi/darknet:gpu
+docker run -d --runtime=nvidia -it -v $PWD:/workspace -w /workspace daisukekobayashi/darknet:gpu bash
+docker exec -it {name of container} bash
+```
+Currently, the compiled darknet file is in the wrong directory (usr/loca/bin) . Move it to workspace directory or /usr/local/bin/
+```
+mv /usr/loca/bin /workspace
+```
+Clone this repo. All data is in the DIRT folder. Add all jpg file paths to train.txt, relative to the darknet executable using something like this in the DIRT directory.
+```
+ls -R | grep jpg > train.txt
+```
+prepare files as listen in https://github.com/AlexeyAB/darknet#how-to-train-with-multi-gpu. Config and base model used for training are available in the train folder. other files are in the data folder.
 
-## Next Steps
-The next step would be to build a mobile app that can access the API to help users determine which category their waste belongs to, and how best to prepare it for recycling 
+To train, enter following command in docker container 
+```
+./darknet detector train data/obj.data yolov3-tiny.cfg.txt yolov3-tiny.conv.11
+```
+
+## Results 
+Trained model is available in the models folder (models/yolov3-tiny_final.weights)

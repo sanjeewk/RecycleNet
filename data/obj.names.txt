@@ -1,0 +1,10 @@
+coffee_spill
+dust
+paper
+plastic
+metal
+shredded_paper
+coffee_stain
+food_pouch
+
+
